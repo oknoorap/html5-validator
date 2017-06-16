@@ -51,3 +51,15 @@ test('check file2.html has unallowed element context', async t => {
     })
   })
 })
+
+test('check html string source should be valid', async t => {
+  await validator('<!DOCTYPE html><html><head><title>HTML Source</title></head><body><div id="content">Hello World</div></body></html>').then(result => {
+    t.is(result.messages.filter(item => item.type === 'error').length, 0)
+  })
+})
+
+test('check html string source should be invalid', async t => {
+  await validator('<!DOCTYPE html><html><head><title></title></head><body><div id="content">Hello World</div></body></html>').then(result => {
+    t.true(result.messages.filter(item => item.type === 'error').length > 0)
+  })
+})
