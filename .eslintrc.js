@@ -10,20 +10,20 @@ module.exports = {
   },
   "rules": {
     "indent": [
-        "error",
-        2
+      "error",
+      2
     ],
     "linebreak-style": [
-        "error",
-        "unix"
+      "error",
+      "unix"
     ],
     "quotes": [
-        "error",
-        "single"
+      "error",
+      "single"
     ],
     "semi": [
-        "error",
-        "never"
+      "error",
+      "never"
     ]
   }
 };
