@@ -10,25 +10,25 @@ const checkFile = file => validator(file)
 
 test('check https://www.w3.org, it should be a valid html', async t => {
   await checkWebsite('https://www.w3.org').then(result => {
-    t.is(result.messages.length, 0)
+    t.is(result.messages.filter(item => item.type === 'error').length, 0)
   })
 })
 
 test('check https://bing.com, it should be an invalid html', async t => {
   await checkWebsite('https://bing.com').then(result => {
-    t.true(result.messages.length > 0)
+    t.true(result.messages.filter(item => item.type === 'error').length > 0)
   })
 })
 
 test('check file1.html file should be valid', async t => {
   await checkFile(validHtml).then(result => {
-    t.is(result.messages.length, 0)
+    t.is(result.messages.filter(item => item.type === 'error').length, 0)
   })
 })
 
 test('check file2.html file should be invalid', async t => {
   await checkFile(invalidHtml).then(result => {
-    t.true(result.messages.length > 0)
+    t.true(result.messages.filter(item => item.type === 'error').length > 0)
   })
 })
 
@@ -49,5 +49,17 @@ test('check file2.html has unallowed element context', async t => {
         t.pass()
       }
     })
+  })
+})
+
+test('check html string source should be valid', async t => {
+  await validator('<!DOCTYPE html><html><head><title>HTML Source</title></head><body><div id="content">Hello World</div></body></html>').then(result => {
+    t.is(result.messages.filter(item => item.type === 'error').length, 0)
+  })
+})
+
+test('check html string source should be invalid', async t => {
+  await validator('<!DOCTYPE html><html><head><title></title></head><body><div id="content">Hello World</div></body></html>').then(result => {
+    t.true(result.messages.filter(item => item.type === 'error').length > 0)
   })
 })

@@ -2,7 +2,7 @@ const {existsSync, statSync, readFile} = require('fs')
 const url = require('url')
 const axios = require('axios')
 
-const apiUrl = 'https://validator.w3.org/nu/?out=json'
+const apiUrl = 'https://validator.w3.org/nu/?out=json&parser=html5'
 const config = {
   headers: {
     'Content-Type': 'text/html; charset=utf-8',

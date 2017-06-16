@@ -1,0 +1,106 @@
+#!/usr/bin/env node
+/* eslint-disable no-console */
+
+const program = require('caporal')
+const updateNotifier = require('update-notifier')
+const ora = require('ora')
+const chalk = require('chalk')
+const logSymbols = require('log-symbols')
+const pkg = require('../package.json')
+const validator = require('../index')
+
+const normalizeStr = str => {
+  return str
+    .replace(/[\b]/g, '\\b')
+    .replace(/[\f]/g, '\\f')
+    .replace(/[\n]/g, '\\n')
+    .replace(/[\r]/g, '\\r')
+    .replace(/[\t]/g, '\\t')
+}
+
+const highlight = (str, pos, length, color) => {
+  const before = normalizeStr(str.substr(0, pos))
+  const after = normalizeStr(str.substr(pos + length, str.length))
+  const content = normalizeStr(str.substr(pos, length))
+  return before + chalk.underline[color](content) + after
+}
+
+const action = (args, options) => {
+  if (!args.source) {
+    throw new Error('No Source Defined.')
+  }
+
+  console.log('')
+  const spinner = ora(`Validating ${args.source}`).start()
+  const happyExit = () => {
+    spinner.succeed('Cool, Your HTML is Valid.')
+    console.log('')
+    process.exit()
+  }
+
+  validator(args.source).then(result => {
+    if (result.messages.length === 0) {
+      happyExit()
+    }
+
+    spinner.clear()
+
+    const totals = {errors: 0, warnings: 0}
+    const messages = result.messages.filter(item => {
+      return item.type === 'error' || (item.type === 'info' && item.subType === 'warning' && options.skip !== 'warning')
+    })
+
+    messages.forEach(item => {
+      let symbol = 'error'
+      let line = item.lastLine
+      let color = 'red'
+
+      if (item.firstColumn) {
+        line += ':' + item.firstColumn
+      }
+
+      if (item.type === 'error') {
+        totals.errors++
+      }
+
+      if (item.type === 'info' && item.subType === 'warning' && options.skip !== 'warning') {
+        totals.warnings++
+        symbol = 'warning'
+        color = 'yellow'
+      }
+
+      const data = highlight(item.extract, item.hiliteStart, item.hiliteLength, color)
+      process.stdout.write(`  ${logSymbols[symbol]} ${chalk.underline.white(line)} ${item.message}`)
+      process.stdout.write('\n')
+      process.stdout.write('  ' + data)
+      process.stdout.write('\n\n')
+    })
+
+    if (totals.errors > 0 || totals.warnings > 0) {
+      spinner.frame()
+      console.log('')
+      spinner.fail(`You've got ${totals.errors} errors, and ${totals.warnings} warnings.`)
+      console.log('')
+      process.exit(1)
+    } else {
+      happyExit()
+    }
+  }).catch(err => {
+    spinner.fail(err.message)
+  })
+}
+
+program
+  .version(pkg.version)
+  .description('W3 Validation Tools')
+  .argument('[source]', 'Source can be URL, Filename, or Quoted Strings.')
+  .option('--skip <skip>', 'Skip info or warning')
+  .action(action)
+
+program.parse(process.argv)
+
+// Notify update, cached every hour
+updateNotifier({
+  pkg,
+  updateCheckInterval: 1000 * 60 * 60
+}).notify()
