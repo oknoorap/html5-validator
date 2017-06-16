@@ -1,4 +1,7 @@
 {
+  "name": "html5-validator",
+  "description": "W3C html5 validator in Node.js",
+  "main": "index.js",
   "version": "1.0.0",
   "scripts": {
     "test": "xo && ava --verbose"
@@ -9,12 +12,30 @@
     "xo": "^0.18.2"
   },
   "ava": {
-    "files": []
+    "files": [
+      "test/test.js"
+    ]
   },
   "xo": {
     "esnext": true,
     "space": true,
     "semicolon": false
   },
-  "dependencies": {}
+  "dependencies": {
+    "axios": "^0.16.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oknoorap/html5-validator.git"
+  },
+  "keywords": [
+    "validator",
+    "html5",
+    "cli"
+  ],
+  "author": "oknoorap",
+  "bugs": {
+    "url": "https://github.com/oknoorap/html5-validator/issues"
+  },
+  "homepage": "https://github.com/oknoorap/html5-validator#readme"
 }
