@@ -47,7 +47,7 @@ const action = (args, options) => {
 
     const totals = {errors: 0, warnings: 0}
     const messages = result.messages.filter(item => {
-      return item.type === 'error' || (item.type === 'info' && item.subType === 'warning' && options.skip !== 'warning')
+      return item.type === 'error' || (item.type === 'info' && item.subType === 'warning' && !options.skipWarning)
     })
 
     messages.forEach(item => {
@@ -63,7 +63,7 @@ const action = (args, options) => {
         totals.errors++
       }
 
-      if (item.type === 'info' && item.subType === 'warning' && options.skip !== 'warning') {
+      if (item.type === 'info' && item.subType === 'warning' && !options.skipWarning) {
         totals.warnings++
         symbol = 'warning'
         color = 'yellow'
@@ -94,7 +94,7 @@ program
   .version(pkg.version)
   .description('W3 Validation Tool')
   .argument('[source]', 'Source could be url, filename, or quoted strings.')
-  .option('--skip <skip>', 'Skip info or warning.')
+  .option('--skip-warning', 'Skip warning.')
   .action(action)
 
 program.parse(process.argv)

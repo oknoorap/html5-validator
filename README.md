@@ -50,15 +50,15 @@ html5v - W3 Validation Tool
 
   USAGE
 
-    html5v [source]
+    html5v    [source]
 
   ARGUMENTS
 
-    [source] Source could be url, filename, or quoted strings. optional 
+    [source]    Source could be url, filename, or quoted strings. optional 
 
   OPTIONS
 
-    --skip <skip> Skip info or warning. optional
+    --skip-warning    Skip warning message. optional
 
 ```
 
