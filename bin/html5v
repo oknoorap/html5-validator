@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 
+const {existsSync} = require('fs')
+const url = require('url')
 const program = require('caporal')
 const updateNotifier = require('update-notifier')
 const ora = require('ora')
@@ -30,8 +32,14 @@ const action = (args, options) => {
     throw new Error('No Source Defined.')
   }
 
+  const uri = url.parse(args.source)
+  const invalidUrl = uri.protocol === null && uri.host === null
+  let source = (invalidUrl || existsSync(args.source) === false)
+    ? 'Source Code'
+    : args.source
+
   console.log('')
-  const spinner = ora(`Validating ${args.source}`).start()
+  const spinner = ora(`Validating ${source}`).start()
   const happyExit = () => {
     spinner.succeed('Cool, Your HTML is Valid.')
     console.log('')
