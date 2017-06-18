@@ -54,11 +54,11 @@ html5v - W3 Validation Tools
 
   ARGUMENTS
 
-    [source]      Source can be URL, Filename, or Quoted Strings.      optional 
+    [source] Source could be url, filename, or quoted Strings. optional 
 
   OPTIONS
 
-    --skip <skip>      Skip info or warning      optional
+    --skip <skip> Skip info or warning. optional
 
 ```
 

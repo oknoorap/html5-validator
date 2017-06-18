@@ -92,9 +92,9 @@ const action = (args, options) => {
 
 program
   .version(pkg.version)
-  .description('W3 Validation Tools')
-  .argument('[source]', 'Source can be URL, Filename, or Quoted Strings.')
-  .option('--skip <skip>', 'Skip info or warning')
+  .description('W3 Validation Tool')
+  .argument('[source]', 'Source could be url, filename, or quoted strings.')
+  .option('--skip <skip>', 'Skip info or warning.')
   .action(action)
 
 program.parse(process.argv)
