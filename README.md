@@ -46,7 +46,7 @@ validate(htmlSource).then(result => {
 ## CLI
 ```bash
 
-html5v - W3 Validation Tools
+html5v - W3 Validation Tool
 
   USAGE
 
@@ -54,7 +54,7 @@ html5v - W3 Validation Tools
 
   ARGUMENTS
 
-    [source] Source could be url, filename, or quoted Strings. optional 
+    [source] Source could be url, filename, or quoted strings. optional 
 
   OPTIONS
 
