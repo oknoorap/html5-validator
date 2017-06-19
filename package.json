@@ -25,6 +25,7 @@
     "html5v": "bin/html5v"
   },
   "files": [
+    "bin",
     "index.js"
   ],
   "dependencies": {
