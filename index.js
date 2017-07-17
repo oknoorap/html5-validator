@@ -37,7 +37,7 @@ module.exports = source => new Promise((resolve, reject) => {
   if (uri.protocol && uri.host) {
     return viewSource(source).then(htmlSource => {
       validator(htmlSource).then(resolve).catch(reject)
-    })
+    }).catch(reject)
   }
 
   if (existsSync(source) && statSync(source).isFile()) {
