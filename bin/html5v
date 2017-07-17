@@ -27,6 +27,22 @@ const highlight = (str, pos, length, color) => {
   return before + chalk.underline[color](content) + after
 }
 
+const symbolTypes = {
+  ERROR: 'error',
+  WARN: 'warning'
+}
+
+const colorTypes = {
+  RED: 'red',
+  YELLOW: 'yellow'
+}
+
+const errTypes = {
+  ERROR: 'error',
+  WARN: 'warning',
+  INFO: 'info'
+}
+
 const action = (args, options) => {
   if (!args.source) {
     throw new Error('No Source Defined.')
@@ -55,26 +71,26 @@ const action = (args, options) => {
 
     const totals = {errors: 0, warnings: 0}
     const messages = result.messages.filter(item => {
-      return item.type === 'error' || (item.type === 'info' && item.subType === 'warning' && !options.skipWarning)
+      return item.type === errTypes.ERROR || (item.type === errTypes.INFO && item.subType === errTypes.WARN && !options.skipWarning)
     })
 
     messages.forEach(item => {
-      let symbol = 'error'
+      let symbol = symbolTypes.ERROR
       let line = item.lastLine
-      let color = 'red'
+      let color = colorTypes.RED
 
       if (item.firstColumn) {
         line += ':' + item.firstColumn
       }
 
-      if (item.type === 'error') {
+      if (item.type === errTypes.ERROR) {
         totals.errors++
       }
 
-      if (item.type === 'info' && item.subType === 'warning' && !options.skipWarning) {
+      if (item.type === errTypes.INFO && item.subType === errTypes.WARN && !options.skipWarning) {
         totals.warnings++
-        symbol = 'warning'
-        color = 'yellow'
+        symbol = symbolTypes.WARN
+        color = colorTypes.YELLOW
       }
 
       const data = highlight(item.extract, item.hiliteStart, item.hiliteLength, color)
@@ -95,6 +111,7 @@ const action = (args, options) => {
     }
   }).catch(err => {
     spinner.fail(err.message)
+    process.exit(1)
   })
 }
 
