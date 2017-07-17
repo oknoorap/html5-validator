@@ -95,6 +95,7 @@ const action = (args, options) => {
     }
   }).catch(err => {
     spinner.fail(err.message)
+    process.exit(1)
   })
 }
 
