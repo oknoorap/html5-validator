@@ -1,5 +1,6 @@
 const {existsSync, statSync, readFile} = require('fs')
 const url = require('url')
+const normalizeUrl = require('normalize-url')
 const axios = require('axios')
 
 const apiUrl = 'https://validator.w3.org/nu/?out=json&parser=html5'
@@ -11,7 +12,7 @@ const config = {
 }
 
 const viewSource = url => new Promise((resolve, reject) => {
-  axios.get(url, config)
+  axios.get(normalizeUrl(url), config)
     .then(response => {
       resolve(response.data)
     })
