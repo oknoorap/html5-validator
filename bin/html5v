@@ -50,9 +50,15 @@ const action = (args, options) => {
 
   const uri = url.parse(args.source)
   const invalidUrl = uri.protocol === null && uri.host === null
-  let source = (invalidUrl || existsSync(args.source) === false)
-    ? 'Source Code'
-    : args.source
+  let source = 'Source Code'
+
+  if (invalidUrl === false) {
+    source = args.source
+  }
+
+  if (existsSync(args.source)) {
+    source = args.source
+  }
 
   console.log('')
   const spinner = ora(`Validating ${source}`).start()
