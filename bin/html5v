@@ -43,6 +43,18 @@ const errTypes = {
   INFO: 'info'
 }
 
+const simpleDotsLoader = {
+  interval: 70,
+  frames: [
+    '.  ',
+    '.. ',
+    ' ..',
+    ' ..',
+    '  .',
+    '   '
+  ]
+}
+
 const action = (args, options) => {
   if (!args.source) {
     throw new Error('No Source Defined.')
@@ -61,7 +73,11 @@ const action = (args, options) => {
   }
 
   console.log('')
-  const spinner = ora(`Validating ${source}`).start()
+  const spinner = ora(`Validating ${source}`)
+
+  spinner.spinner = simpleDotsLoader
+  spinner.start()
+
   const happyExit = () => {
     spinner.succeed('Cool, Your HTML is Valid.')
     console.log('')
