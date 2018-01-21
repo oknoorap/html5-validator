@@ -127,7 +127,12 @@ const action = (args, options) => {
       console.log('')
       spinner.fail(`You've got ${totals.errors} errors, and ${totals.warnings} warnings.`)
       console.log('')
-      process.exit(1)
+
+      if (totals.errors === 0) {
+        process.exit()
+      } else {
+        process.exit(1)
+      }
     } else {
       happyExit()
     }
