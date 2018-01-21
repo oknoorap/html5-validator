@@ -8,12 +8,6 @@ const invalidHtml = path.join(__dirname, 'file2.html')
 const checkWebsite = url => validator(url)
 const checkFile = file => validator(file)
 
-test('check https://www.w3.org, it should be a valid html', async t => {
-  await checkWebsite('https://www.w3.org').then(result => {
-    t.is(result.messages.filter(item => item.type === 'error').length, 0)
-  })
-})
-
 test('check https://bing.com, it should be an invalid html', async t => {
   await checkWebsite('https://bing.com').then(result => {
     t.true(result.messages.filter(item => item.type === 'error').length > 0)
