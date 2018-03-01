@@ -72,15 +72,20 @@ const action = (args, options) => {
     source = args.source
   }
 
-  console.log('')
   const spinner = ora(`Validating ${source}`)
 
-  spinner.spinner = simpleDotsLoader
-  spinner.start()
+  if (!options.json) {
+    console.log('')
+    spinner.spinner = simpleDotsLoader
+    spinner.start()
+  }
 
   const happyExit = () => {
-    spinner.succeed('Cool, Your HTML is Valid.')
-    console.log('')
+    if (!options.json) {
+      spinner.succeed('Cool, Your HTML is Valid.')
+      console.log('')
+    }
+
     process.exit()
   }
 
@@ -89,7 +94,14 @@ const action = (args, options) => {
       happyExit()
     }
 
-    spinner.clear()
+    if (!options.json) {
+      spinner.clear()
+    }
+
+    if (options.json) {
+      console.log(result)
+      happyExit()
+    }
 
     const totals = {errors: 0, warnings: 0}
     const messages = result.messages.filter(item => {
@@ -145,8 +157,9 @@ const action = (args, options) => {
 program
   .version(pkg.version)
   .description('W3 Validation Tool')
-  .argument('[source]', 'Source could be url, filename, or quoted strings.')
-  .option('--skip-warning', 'Skip warning.')
+  .argument('[source]', 'Source could be url, filename, or quoted strings.', program.STRING)
+  .option('--skip-warning', 'Skip warning.', program.BOOLEAN)
+  .option('--json', 'Print output as JSON format.', program.BOOLEAN)
   .action(action)
 
 program.parse(process.argv)
