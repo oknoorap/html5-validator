@@ -72,10 +72,11 @@ const action = (args, options) => {
     source = args.source
   }
 
-  const spinner = ora(`Validating ${source}`)
+  let spinner
 
   if (!options.json) {
     console.log('')
+    spinner = ora(`Validating ${source}`)
     spinner.spinner = simpleDotsLoader
     spinner.start()
   }
@@ -94,19 +95,17 @@ const action = (args, options) => {
       happyExit()
     }
 
-    if (!options.json) {
-      spinner.clear()
-    }
-
-    if (options.json) {
-      console.log(result)
-      happyExit()
-    }
-
     const totals = {errors: 0, warnings: 0}
     const messages = result.messages.filter(item => {
       return item.type === errTypes.ERROR || (item.type === errTypes.INFO && item.subType === errTypes.WARN && !options.skipWarning)
     })
+
+    if (options.json) {
+      process.stdout.write(JSON.stringify(messages))
+      process.exit()
+    }
+
+    spinner.clear()
 
     messages.forEach(item => {
       let symbol = symbolTypes.ERROR
@@ -159,7 +158,7 @@ program
   .description('W3 Validation Tool')
   .argument('[source]', 'Source could be url, filename, or quoted strings.', program.STRING)
   .option('--skip-warning', 'Skip warning.', program.BOOLEAN)
-  .option('--json', 'Print output as JSON format.', program.BOOLEAN)
+  .option('--json', 'Print output in JSON format', program.BOOLEAN)
   .action(action)
 
 program.parse(process.argv)
