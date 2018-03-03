@@ -2,7 +2,7 @@
   "name": "html5-validator",
   "description": "W3C html5 validator in Node.js",
   "main": "index.js",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "scripts": {
     "test": "xo && ava --verbose"
   },
