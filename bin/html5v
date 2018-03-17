@@ -21,9 +21,21 @@ const normalizeStr = str => {
 }
 
 const highlight = (str, pos, length, color) => {
-  const before = normalizeStr(str.substr(0, pos))
-  const after = normalizeStr(str.substr(pos + length, str.length))
-  const content = normalizeStr(str.substr(pos, length))
+  let before = ''
+  if (typeof str === 'string') {
+    normalizeStr(str.substr(0, pos))
+  }
+
+  let after = ''
+  if (typeof str === 'string') {
+    normalizeStr(str.substr(pos + length, str.length))
+  }
+
+  let content = ''
+  if (typeof str === 'string') {
+    normalizeStr(str.substr(pos, length))
+  }
+
   return before + chalk.underline[color](content) + after
 }
 
