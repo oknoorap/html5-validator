@@ -68,10 +68,6 @@ const simpleDotsLoader = {
 }
 
 const action = (args, options) => {
-  if (!args.source) {
-    throw new Error('No Source Defined.')
-  }
-
   const uri = url.parse(args.source)
   const invalidUrl = uri.protocol === null && uri.host === null
   let source = 'Source Code'
@@ -168,7 +164,7 @@ const action = (args, options) => {
 program
   .version(pkg.version)
   .description('W3 Validation Tool')
-  .argument('[source]', 'Source could be url, filename, or quoted strings.', program.STRING)
+  .argument('<source>', 'Source could be url, filename, or quoted strings.', program.STRING)
   .option('--skip-warning', 'Skip warning.', program.BOOLEAN)
   .option('--json', 'Print output in JSON format', program.BOOLEAN)
   .action(action)
